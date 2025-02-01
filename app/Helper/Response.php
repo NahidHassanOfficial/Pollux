@@ -24,7 +24,7 @@ class Response
             $code);
     }
 
-    public static function error($data = null, $code = 400)
+    public static function error($data = [], $code = 400)
     {
         return response()->json(
             [

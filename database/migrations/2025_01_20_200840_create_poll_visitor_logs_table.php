@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('poll_visitor_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('poll_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('poll_id')->constrained();
             $table->string('ip')->index();
             $table->string('user_agent');
             $table->boolean('is_voted')->default(false);

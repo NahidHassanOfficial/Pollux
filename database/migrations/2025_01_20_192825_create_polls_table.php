@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('total_visitor')->default(0);
             $table->integer('total_vote')->default(0);
             $table->timestamp('expire_at');
+            $table->string('signature')->nullable();
             $table->timestamps();
         });
     }

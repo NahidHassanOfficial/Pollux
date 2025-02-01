@@ -3,9 +3,12 @@
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Auth\SocialiteController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('throttle:5,2')->group(function () {
+Route::get('/user/{username?}', [UserController::class, 'userSearch'])->name('seachUser');
+
+Route::middleware('throttle:15,2')->group(function () {
     Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
     Route::get('/verify-email/{username}', [RegisterController::class, 'verifyEmail'])->name('verifyEmail')->middleware('signed');
 

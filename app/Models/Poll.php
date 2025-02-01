@@ -16,6 +16,7 @@ class Poll extends Model
         'total_visitor',
         'total_vote',
         'expire_at',
+        'signature',
     ];
 
     protected static function boot()
