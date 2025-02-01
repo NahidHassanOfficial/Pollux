@@ -7,11 +7,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('throttle:5,2')->group(function () {
     Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
-    Route::post('/verify-email', [RegisterController::class, 'verifyEmail'])->name('verifyEmail.post');
+    Route::get('/verify-email/{username}', [RegisterController::class, 'verifyEmail'])->name('verifyEmail')->middleware('signed');
 
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-    Route::post('/send-otp', [AuthController::class, 'sendOTP'])->name('sendOTP.post');
-    Route::post('/verify-otp', [AuthController::class, 'verifyOTP'])->name('verifyOTP.post');
     Route::post('/reset-password', [AuthController::class, 'changePassword'])->name('resetPass.post');
 });
 

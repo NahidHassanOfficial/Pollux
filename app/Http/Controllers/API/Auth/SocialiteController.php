@@ -36,15 +36,16 @@ class SocialiteController extends Controller
         if (! $userMatched) {
             $user = User::where('email', $googleProfile->email)->first();
             if ($user) {
-                $user->update(['google_id' => $googleProfile->id, 'image' => $googleProfile->avatar]);
+                $user->update(['google_id' => $googleProfile->id, 'profile_img' => $googleProfile->avatar]);
                 $userModel = $user;
             } else {
                 $userName = $this->uniqueUsername($googleProfile->name);
                 $user     = User::create([
-                    'username'  => $userName,
-                    'email'     => $googleProfile->email,
-                    'google_id' => $googleProfile->id,
-                    'image'     => $googleProfile->avatar,
+                    'username'       => $userName,
+                    'email'          => $googleProfile->email,
+                    'google_id'      => $googleProfile->id,
+                    'profile_img'    => $googleProfile->avatar,
+                    'email_verified' => 1,
                 ]);
                 $userModel = $user;
             }

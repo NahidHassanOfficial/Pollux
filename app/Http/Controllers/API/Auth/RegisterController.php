@@ -17,4 +17,17 @@ class RegisterController extends Controller
         return Response::success();
     }
 
+    public function verifyEmail($username)
+    {
+        if (! request()->hasValidSignature()) {
+            return Response::failed('Invalid Signature');
+        }
+
+        $user                 = User::where('username', $username)->firstOrFail();
+        $user->email_verified = 1;
+        $user->save();
+
+        return Response::success('Email verified successfully');
+    }
+
 }

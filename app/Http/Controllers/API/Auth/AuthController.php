@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Auth;
 use App\Helper\Response;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\EmailVerificationService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -21,9 +22,16 @@ class AuthController extends Controller
             return response()->json($e->errors(), 422);
         }
 
-        $user = User::where('email', request()->email)->select('password')->first();
+        $user = User::where('email', request()->email)->select('id', 'username', 'email', 'password', 'email_verified')->first();
         if ($user) {
+
             if (Hash::check(request()->password, $user->password)) {
+
+                if (! $user->email_verified) {
+                    EmailVerificationService::sendMail($user);
+                    return Response::failed('Email not verified, please verify your email first.');
+                }
+
                 if (request()->remember === 1) {
                     $token = $user->createToken('auth_token', ['*'], now()->addMonth())->plainTextToken;
                 } else {
