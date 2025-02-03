@@ -19,5 +19,5 @@ Route::get('/profile/{username}/polls', [ProfileController::class, 'userPolls'])
 Route::get('/poll/{poll_uid}', [PollController::class, 'viewPoll'])->name('pollView');
 Route::post('/poll/{poll_uid}/vote', [VotingController::class, 'vote'])->name('vote');
 
-Route::get('/poll/feed/{filterParam?}', [PollFeedController::class, 'getPolls'])->name('getPolls');
-Route::get('/poll/search/{search}', [PollFeedController::class, 'searchPoll'])->name('searchPoll');
+Route::get('/polls/feed/{filterParam?}', [PollFeedController::class, 'getPolls'])->name('getPolls');
+Route::get('/polls/search/{search}', [PollFeedController::class, 'searchPoll'])->name('searchPoll');

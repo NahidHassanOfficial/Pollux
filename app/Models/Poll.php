@@ -39,6 +39,10 @@ class Poll extends Model
         return $query->where('expire_at', '>', now());
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function pollOptions()
     {
         return $this->hasMany(PollOption::class);

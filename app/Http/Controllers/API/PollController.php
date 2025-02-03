@@ -54,9 +54,9 @@ class PollController extends Controller
     public function viewPoll($poll_uid)
     {
         if (request()->hasValidSignature()) {
-            $poll = Poll::where('poll_uid', $poll_uid)->with('pollOptions')->first();
+            $poll = Poll::where('poll_uid', $poll_uid)->with('pollOptions')->with('user:id,username,profile_img')->first();
         } else {
-            $poll = Poll::visible()->where('poll_uid', $poll_uid)->with('pollOptions')->first();
+            $poll = Poll::visible()->where('poll_uid', $poll_uid)->with('pollOptions')->with('user:id,username,profile_img')->first();
         }
         if ($poll) {
             return Response::success(null, $poll);

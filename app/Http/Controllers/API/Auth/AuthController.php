@@ -41,7 +41,7 @@ class AuthController extends Controller
                 return response()->json(['status' => 'success', 'auth_token' => $token]);
             }
         }
-        return Response::failed();
+        return Response::failed('Invalid email or password!');
     }
 
     public function logout()

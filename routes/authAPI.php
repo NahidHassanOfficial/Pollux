@@ -6,7 +6,7 @@ use App\Http\Controllers\API\Auth\SocialiteController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user/{username?}', [UserController::class, 'userSearch'])->name('seachUser');
+Route::get('/user/{username?}', [UserController::class, 'userSearch'])->name('searchUser');
 
 Route::middleware('throttle:15,2')->group(function () {
     Route::post('/register', [RegisterController::class, 'register'])->name('register.post');

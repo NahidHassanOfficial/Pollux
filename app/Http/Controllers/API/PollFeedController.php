@@ -10,11 +10,11 @@ class PollFeedController extends Controller
     public function getPolls($filterParam = "recent")
     {
         if ($filterParam == 'mostVoted') {
-            $polls = Poll::visible()->unexpired()->orderByDesc('total_vote')->paginate(10);
+            $polls = Poll::visible()->unexpired()->orderByDesc('total_vote')->with('pollOptions')->paginate(10);
         } else if ($filterParam == 'endingSoon') {
             $polls = Poll::visible()->unexpired()->orderBy('expire_at')->paginate(10);
         } else {
-            $polls = Poll::visible()->unexpired()->orderByDesc('created_at')->paginate(10);
+            $polls = Poll::visible()->unexpired()->orderByDesc('created_at')->with('pollOptions')->paginate(10);
         }
 
         return Response::success(null, $polls);
