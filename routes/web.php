@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\Web\AuthPageController;
+use App\Http\Middleware\isAuthOrNotMiddleware;
 use App\Http\Middleware\LoggedUserAuthPageRestrictionMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('index');
+Route::middleware([isAuthOrNotMiddleware::class])->group(function () {
+    Route::get('/', function () {
+        return view('components.client.landing.layout');
+    })->name('index');
+});
 
 Route::middleware([LoggedUserAuthPageRestrictionMiddleware::class])->group(function () {
     Route::get('/login', [AuthPageController::class, 'login'])->name('loginPage');
