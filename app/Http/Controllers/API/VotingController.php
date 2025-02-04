@@ -12,10 +12,11 @@ class VotingController extends Controller
 {
     public function vote()
     {
-        $poll_id = request()->poll_id;
-        $options = request()->options;
+        $poll_uid = request()->poll_uid;
+        $options  = request()->options;
 
-        $poll = Poll::findOrFail($poll_id);
+        $poll    = Poll::where('poll_uid', $poll_uid)->first();
+        $poll_id = $poll->id;
         if ($poll->status != 'active') {
             return response()->json(['error' => 'Voting not allowed, time out'], 400);
         }
@@ -51,7 +52,7 @@ class VotingController extends Controller
             return Response::success('Vote recieved successfully');
         } catch (\Exception $e) {
             DB::rollBack();
-            return Response::error();
+            return Response::error($e);
         }
     }
 }

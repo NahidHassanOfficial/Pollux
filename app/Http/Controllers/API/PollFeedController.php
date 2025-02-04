@@ -12,7 +12,7 @@ class PollFeedController extends Controller
         if ($filterParam == 'mostVoted') {
             $polls = Poll::visible()->unexpired()->orderByDesc('total_vote')->with('pollOptions')->paginate(10);
         } else if ($filterParam == 'endingSoon') {
-            $polls = Poll::visible()->unexpired()->orderBy('expire_at')->paginate(10);
+            $polls = Poll::visible()->unexpired()->orderBy('expire_at')->with('pollOptions')->paginate(10);
         } else {
             $polls = Poll::visible()->unexpired()->orderByDesc('created_at')->with('pollOptions')->paginate(10);
         }
@@ -20,12 +20,13 @@ class PollFeedController extends Controller
         return Response::success(null, $polls);
     }
 
-    public function searchPoll($search)
+    public function searchPoll()
     {
-        $polls = Poll::visible()->where('title', 'like', '%' . $search . '%')
-            ->orderByDesc('created_at')->limit(5)->get();
+        $search = request()->input('query');
+        $polls  = Poll::visible()->unexpired()->where('title', 'like', '%' . $search . '%')
+            ->with('pollOptions')->orderByDesc('created_at')->limit(10)->get();
 
-        return $polls;
+        return Response::success(null, $polls);
     }
 
 }

@@ -8,9 +8,38 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
-    public function profile($username)
+
+    protected function isAuthUser()
     {
-        $user       = User::where('username', $username)->first();
+        $user = Auth::guard('sanctum')->user();
+        if ($user) {
+            return $user;
+        }
+        return false;
+    }
+
+    public function authUser()
+    {
+        $user = $this->isAuthUser();
+        if ($user) {
+            return Response::success('', $user);
+        }
+        return Response::error('Unauthorized');
+    }
+
+    public function profileInfo($username = null)
+    {
+        $user = [];
+
+        if ($username == null) {
+            $user = $this->isAuthUser();
+            if (! $user) {
+                return Response::error('User not found');
+            }
+        } else {
+            $user = User::where('username', $username)->first();
+        }
+
         $activePoll = $user->polls()->where('status', 'active')->count();
 
         return Response::success(null, [
@@ -19,15 +48,28 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function userPolls($username)
+    public function userPolls($username = null)
     {
-        $user  = User::where('username', $username)->first();
-        $polls = $user->polls()->visible()->select('title', 'status', 'total_vote', 'expire_at')->paginate(10);
+        $isAuthUser = false;
+        $user       = [];
+        $polls      = [];
+
+        $user = $this->isAuthUser();
+        if ($user) {
+            $isAuthUser = true;
+        }
+
+        if ($isAuthUser && ($user->username === $username || $username === null)) {
+            $polls = $user->polls()->orderByDesc('created_at')->paginate(10);
+        } else {
+            $user  = User::where('username', $username)->first();
+            $polls = $user->polls()->visible()->select('poll_uid', 'title', 'status', 'total_vote', 'expire_at')->paginate(10);
+        }
 
         return Response::success(null, [
-            'polls' => $polls,
+            'isAuthUser' => $isAuthUser,
+            'polls'      => $polls,
         ]);
-
     }
 
     public function changePassword()

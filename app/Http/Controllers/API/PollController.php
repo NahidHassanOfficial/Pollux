@@ -37,7 +37,7 @@ class PollController extends Controller
             }
 
             if (! $request->public_visibility) {
-                $signature = URL::temporarySignedRoute('pollView', Carbon::parse($request->expire_at), ['poll_uid' => $poll->poll_uid]);
+                $signature = URL::temporarySignedRoute('privatePollPage', Carbon::parse($request->expire_at), ['poll_uid' => $poll->poll_uid]);
                 $poll->forceFill(['signature' => $signature])->save();
             }
 
@@ -53,17 +53,12 @@ class PollController extends Controller
 
     public function viewPoll($poll_uid)
     {
-        if (request()->hasValidSignature()) {
-            $poll = Poll::where('poll_uid', $poll_uid)->with('pollOptions')->with('user:id,username,profile_img')->first();
-        } else {
-            $poll = Poll::visible()->where('poll_uid', $poll_uid)->with('pollOptions')->with('user:id,username,profile_img')->first();
-        }
+        $poll = Poll::visible()->where('poll_uid', $poll_uid)->with('pollOptions')->with('user:id,username,profile_img')->first();
         if ($poll) {
             return Response::success(null, $poll);
         } else {
             return Response::failed('Poll not found');
         }
-
     }
 
     public function deletePoll()
