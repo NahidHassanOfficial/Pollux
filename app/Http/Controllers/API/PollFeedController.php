@@ -11,23 +11,25 @@ class PollFeedController extends Controller
     public function getPolls($filterParam = "recent")
     {
 
-        $time  = 60 * 60;                   // 1 hour
+        $timeFrom = 60 * 5; // 5 minutes
+        $timeTo   = 60 * 7; // 7 minutes
+
         $page  = request()->get('page', 1); //default page is 1
         $polls = [];
 
         if ($filterParam == 'mostVoted') {
             $key   = 'feed_' . $filterParam . '_' . $page;
-            $polls = Cache::remember($key, $time, function () {
+            $polls = Cache::flexible($key, [$timeFrom, $timeTo], function () {
                 return Poll::visible()->unexpired()->orderByDesc('total_vote')->with('pollOptions')->paginate(10);
             });
         } else if ($filterParam == 'endingSoon') {
             $key   = 'feed_' . $filterParam . '_' . $page;
-            $polls = Cache::remember($key, $time, function () {
+            $polls = Cache::flexible($key, [$timeFrom, $timeTo], function () {
                 return Poll::visible()->unexpired()->orderBy('expire_at')->with('pollOptions')->paginate(10);
             });
         } else {
             $key   = 'feed_' . 'recent' . '_' . $page;
-            $polls = Cache::remember($key, $time, function () {
+            $polls = Cache::flexible($key, [$timeFrom, $timeTo], function () {
                 return Poll::visible()->unexpired()->orderByDesc('created_at')->with('pollOptions')->paginate(10);
             });
         }

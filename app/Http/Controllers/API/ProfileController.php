@@ -43,8 +43,9 @@ class ProfileController extends Controller
         }
 
         $key        = 'activePoll_' . $user->username;
-        $time       = 60 * 60; // 1 hour
-        $activePoll = Cache::remember($key, $time, function () use ($user) {
+        $timeFrom   = 60 * 5; // 5 minutes
+        $timeTo     = 60 * 7; // 7 minutes
+        $activePoll = Cache::flexible($key, [$timeFrom, $timeTo], function () use ($user) {
             return $user->polls()->where('status', 'active')->count();
         });
 

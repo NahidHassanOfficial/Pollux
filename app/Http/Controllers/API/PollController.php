@@ -54,9 +54,10 @@ class PollController extends Controller
 
     public function viewPoll($poll_uid)
     {
-        $key  = 'view_' . $poll_uid;
-        $time = 60 * 60; // 1 hour
-        $poll = Cache::remember($key, $time, function () use ($poll_uid) {
+        $key      = 'view_' . $poll_uid;
+        $timeFrom = 60 * 5; // 5 minutes
+        $timeTo   = 60 * 7; // 7 minutes
+        $poll     = Cache::flexible($key, [$timeFrom, $timeTo], function () use ($poll_uid) {
             return Poll::visible()->where('poll_uid', $poll_uid)->with('pollOptions')->with('user:id,username,profile_img')->first();
         });
 
