@@ -4,17 +4,32 @@ namespace App\Http\Controllers\API;
 use App\Helper\Response;
 use App\Http\Controllers\Controller;
 use App\Models\Poll;
+use Illuminate\Support\Facades\Cache;
 
 class PollFeedController extends Controller
 {
     public function getPolls($filterParam = "recent")
     {
+
+        $time  = 60 * 60;                   // 1 hour
+        $page  = request()->get('page', 1); //default page is 1
+        $polls = [];
+
         if ($filterParam == 'mostVoted') {
-            $polls = Poll::visible()->unexpired()->orderByDesc('total_vote')->with('pollOptions')->paginate(10);
+            $key   = 'feed_' . $filterParam . '_' . $page;
+            $polls = Cache::remember($key, $time, function () {
+                return Poll::visible()->unexpired()->orderByDesc('total_vote')->with('pollOptions')->paginate(10);
+            });
         } else if ($filterParam == 'endingSoon') {
-            $polls = Poll::visible()->unexpired()->orderBy('expire_at')->with('pollOptions')->paginate(10);
+            $key   = 'feed_' . $filterParam . '_' . $page;
+            $polls = Cache::remember($key, $time, function () {
+                return Poll::visible()->unexpired()->orderBy('expire_at')->with('pollOptions')->paginate(10);
+            });
         } else {
-            $polls = Poll::visible()->unexpired()->orderByDesc('created_at')->with('pollOptions')->paginate(10);
+            $key   = 'feed_' . 'recent' . '_' . $page;
+            $polls = Cache::remember($key, $time, function () {
+                return Poll::visible()->unexpired()->orderByDesc('created_at')->with('pollOptions')->paginate(10);
+            });
         }
 
         return Response::success(null, $polls);

@@ -8,6 +8,7 @@ use App\Models\Poll;
 use App\Models\PollOption;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 
@@ -53,7 +54,12 @@ class PollController extends Controller
 
     public function viewPoll($poll_uid)
     {
-        $poll = Poll::visible()->where('poll_uid', $poll_uid)->with('pollOptions')->with('user:id,username,profile_img')->first();
+        $key  = 'view_' . $poll_uid;
+        $time = 60 * 60; // 1 hour
+        $poll = Cache::remember($key, $time, function () use ($poll_uid) {
+            return Poll::visible()->where('poll_uid', $poll_uid)->with('pollOptions')->with('user:id,username,profile_img')->first();
+        });
+
         if ($poll) {
             return Response::success(null, $poll);
         } else {

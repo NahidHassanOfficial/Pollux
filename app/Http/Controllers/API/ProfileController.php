@@ -5,6 +5,7 @@ use App\Helper\Response;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class ProfileController extends Controller
 {
@@ -33,14 +34,19 @@ class ProfileController extends Controller
 
         if ($username == null) {
             $user = $this->isAuthUser();
-            if (! $user) {
-                return Response::error('User not found');
-            }
         } else {
             $user = User::where('username', $username)->first();
         }
 
-        $activePoll = $user->polls()->where('status', 'active')->count();
+        if (! $user) {
+            return Response::error('User not found');
+        }
+
+        $key        = 'activePoll_' . $user->username;
+        $time       = 60 * 60; // 1 hour
+        $activePoll = Cache::remember($key, $time, function () use ($user) {
+            return $user->polls()->where('status', 'active')->count();
+        });
 
         return Response::success(null, [
             'user'       => $user,
