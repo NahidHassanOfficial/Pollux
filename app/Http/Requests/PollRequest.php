@@ -24,7 +24,7 @@ class PollRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'             => 'required|string|max:20',
+            'title'             => 'required|string|max:50',
             'description'       => 'string|max:50',
             'allow_multiple'    => 'required|boolean',
             'public_visibility' => 'required|boolean',
