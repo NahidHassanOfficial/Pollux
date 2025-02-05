@@ -202,6 +202,10 @@
                                     </p>
                                 </div>
                                 <div class="flex justify-center space-x-3">
+                                    <span x-show="!poll.public_visibility"
+                                        class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
+                                        Private
+                                    </span>
                                     <span class="px-3 py-1 rounded-full text-sm font-medium"
                                         :class="{
                                             'bg-green-100 text-green-800': poll.status === 'active',
@@ -227,15 +231,28 @@
                                 </div>
 
                             </div>
-                            <a :href="'{{ route('pollPage', '') }}/' + poll.poll_uid"
-                                class="inline-flex items-center gap-2 text-[#9b87f5] hover:text-[#8370f3] transition-colors">
-                                View Poll
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path d="M5 12h14M12 5l7 7-7 7" />
-                                </svg>
-                            </a>
+                            <template x-if="!poll.public_visibility">
+                                <a :href="poll.signature"
+                                    class="inline-flex items-center gap-2 text-yellow-500 hover:text-[#8370f3] transition-colors">
+                                    View Private Poll
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </template>
+                            <template x-if="poll.public_visibility">
+                                <a :href="'{{ route('pollPage', '') }}/' + poll.poll_uid"
+                                    class="inline-flex items-center gap-2 text-[#9b87f5] hover:text-[#8370f3] transition-colors">
+                                    View Poll
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </template>
                         </div>
                     </template>
                 </div>
