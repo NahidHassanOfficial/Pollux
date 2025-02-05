@@ -31,7 +31,7 @@ class Poll extends Model
 
     public function scopeVisible($query)
     {
-        return $query->where('public_visibility', true);
+        return $query->where('public_visibility', true)->where('status', '!=', 'restricted');
     }
 
     public function scopeUnexpired($query)

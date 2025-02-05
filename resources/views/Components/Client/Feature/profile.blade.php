@@ -14,6 +14,7 @@
                 },
                 activePoll: 0,
                 polls: [],
+                isOwner: false,
 
                 nextPage: 1,
                 lastPage: 1,
@@ -45,6 +46,7 @@
                                 }
                             });
                         this.polls.push(...response.data.data.polls.data);
+                        this.isOwner = response.data.data.isOwner;
 
                         this.lastPage = response.data.data.polls.last_page;
                         if (this.lastPage >= this.nextPage) {
@@ -57,6 +59,23 @@
                         this.$nextTick(() => {
                             this.setupInfiniteScroll();
                         });
+                    }
+                },
+
+                async deletePoll(poll_uid) {
+                    try {
+                        const response = axios.post('{{ route('poll.delete') }}', {
+                            'poll_uid': poll_uid,
+                        }, {
+                            headers: {
+                                'Authorization': `Bearer ${this.authToken}`
+                            }
+                        });
+
+                        toast('Poll deleted successfully');
+                        this.polls = this.polls.filter(poll => poll.poll_uid !== poll_uid);
+                    } catch (error) {
+                        toast('Something wrong!', 'error');
                     }
                 },
 
@@ -182,10 +201,31 @@
                                         <span x-text="'Ends ' + new Date(poll.expire_at).toLocaleDateString()"></span>
                                     </p>
                                 </div>
-                                <span class="px-3 py-1 rounded-full text-sm font-medium"
-                                    :class="poll.status === 'active' ? 'bg-green-100 text-green-800' :
-                                        'bg-gray-100 text-gray-800'"
-                                    x-text="poll.status==='active' ? 'Active' : 'Ended'"></span>
+                                <div class="flex justify-center space-x-3">
+                                    <span class="px-3 py-1 rounded-full text-sm font-medium"
+                                        :class="{
+                                            'bg-green-100 text-green-800': poll.status === 'active',
+                                            'bg-red-100 text-red-800': poll.status === 'restricted',
+                                            'bg-gray-100 text-gray-800': !['active', 'restricted'].includes(poll.status)
+                                        }"
+                                        x-text="poll.status">
+                                    </span>
+
+                                    <!-- Icon Delete Button -->
+                                    <template x-if="poll.status=='active' && isOwner">
+                                        <button @click="deletePoll(poll.poll_uid)"
+                                            class="text-gray-400 hover:text-red-600 transition-colors">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M3 6h18"></path>
+                                                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                            </svg>
+                                        </button>
+                                    </template>
+                                </div>
+
                             </div>
                             <a :href="'{{ route('pollPage', '') }}/' + poll.poll_uid"
                                 class="inline-flex items-center gap-2 text-[#9b87f5] hover:text-[#8370f3] transition-colors">

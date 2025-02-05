@@ -28,7 +28,7 @@ class PollRequest extends FormRequest
             'description'       => 'string|max:50',
             'allow_multiple'    => 'required|boolean',
             'public_visibility' => 'required|boolean',
-            'expire_at'         => 'required|date|after:today',
+            'expire_at'         => 'required|date|after_or_equal:now',
             'options'           => 'required|array|min:2|max:5',
         ];
     }

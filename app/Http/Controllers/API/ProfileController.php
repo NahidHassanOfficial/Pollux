@@ -50,26 +50,28 @@ class ProfileController extends Controller
 
     public function userPolls($username = null)
     {
-        $isAuthUser = false;
-        $user       = [];
-        $polls      = [];
-
         $user = $this->isAuthUser();
-        if ($user) {
-            $isAuthUser = true;
-        }
-
-        if ($isAuthUser && ($user->username === $username || $username === null)) {
+        if ($user && ($user->username === $username || $username === null)) {
             $polls = $user->polls()->orderByDesc('created_at')->paginate(10);
-        } else {
-            $user  = User::where('username', $username)->first();
-            $polls = $user->polls()->visible()->select('poll_uid', 'title', 'status', 'total_vote', 'expire_at')->paginate(10);
+
+            return Response::success(null, [
+                'isOwner' => true,
+                'polls'   => $polls,
+            ]);
+
         }
 
-        return Response::success(null, [
-            'isAuthUser' => $isAuthUser,
-            'polls'      => $polls,
-        ]);
+        $user = User::where('username', $username)->first();
+        if ($user) {
+            $polls = $user->polls()->visible()->select('poll_uid', 'title', 'status', 'total_vote', 'expire_at')->paginate(10);
+
+            return Response::success(null, [
+                'isOwner' => false,
+                'polls'   => $polls,
+            ]);
+        }
+
+        return Response::error();
     }
 
     public function changePassword()
