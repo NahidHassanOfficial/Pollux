@@ -1,10 +1,7 @@
 <?php
 namespace App\Providers;
 
-use App\Models\Poll;
-use App\Models\User;
-use App\Observers\PollObserver;
-use App\Observers\RegistrationObserver;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,7 +19,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        User::observe(RegistrationObserver::class);
-        Poll::observe(PollObserver::class);
+        DB::prohibitDestructiveCommands(app()->isProduction());
     }
 }

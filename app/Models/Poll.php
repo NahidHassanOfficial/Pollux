@@ -1,9 +1,12 @@
 <?php
 namespace App\Models;
 
+use App\Observers\PollObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Str;
 
+#[ObservedBy([PollObserver::class])]
 class Poll extends Model
 {
     protected $fillable = [
