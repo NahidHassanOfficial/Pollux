@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('poll_visitor_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('poll_id')->constrained();
+            $table->string('poll_id')->nullable();
+            $table->string('fingerprint')->nullable()->index();
             $table->string('ip')->index();
             $table->string('user_agent');
             $table->boolean('is_voted')->default(false);

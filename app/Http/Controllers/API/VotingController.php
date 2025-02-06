@@ -5,6 +5,7 @@ use App\Helper\Response;
 use App\Http\Controllers\Controller;
 use App\Models\Poll;
 use App\Models\PollOption;
+use App\Models\PollVisitorLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -47,6 +48,8 @@ class VotingController extends Controller
             }
 
             $poll->increment('total_vote');
+
+            PollVisitorLog::where('poll_id', $poll_id)->where('fingerprint', request()->fingerprint)->update(['is_voted' => true]);
             DB::commit();
 
             return Response::success('Vote recieved successfully');

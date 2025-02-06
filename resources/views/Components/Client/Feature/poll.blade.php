@@ -5,11 +5,14 @@
         function pollComponent() {
             return {
                 poll: [],
-                hasVoted: false,
+                hasVoted: {{ $hasVoted ?? 'false' }},
                 selectedOptions: [],
                 showShareModal: false,
 
+                fingerprint: '',
+
                 async fetchPollData() {
+
                     const poll_uid = window.location.pathname.split('/').pop();
                     const queryParams = window.location.search || null;
                     const fullSignedPath = `${poll_uid}${queryParams}`;
@@ -26,6 +29,14 @@
                         });
                         this.poll = response.data.data;
                     }
+
+                    this.fingerprint = await fp.get();
+                    try {
+                        const response = await axios.post('/api/store-fingerprint', {
+                            fingerprint: this.fingerprint.visitorId,
+                            poll_uid: poll_uid
+                        });
+                    } catch (error) {}
                 },
 
                 toggleSelection(optionId) {
@@ -46,6 +57,7 @@
                         const response = await axios.post(`/api/poll/${this.poll.poll_uid}/vote`, {
                             'poll_uid': this.poll.poll_uid,
                             'options': this.selectedOptions,
+                            'fingerprint': this.fingerprint.visitorId
                         });
                         this.fetchPollData();
                         this.isVoted = response.data.status == 'success' ? true : false;

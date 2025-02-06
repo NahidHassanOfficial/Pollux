@@ -15,6 +15,7 @@
         "vite": "^6.0.11"
     },
     "dependencies": {
+        "@sparkstone/fingerprintjs": "^3.5.1",
         "alpinejs": "^3.14.8",
         "toastify-js": "^1.12.0"
     }

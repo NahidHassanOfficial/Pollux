@@ -25,3 +25,10 @@ window.toast = function (message, type = "success") {
         },
     }).showToast();
 };
+
+import FingerprintJS from "@sparkstone/fingerprintjs";
+window.FingerprintJS = FingerprintJS;
+
+FingerprintJS.load().then((fp) => {
+    window.fp = fp;
+});
