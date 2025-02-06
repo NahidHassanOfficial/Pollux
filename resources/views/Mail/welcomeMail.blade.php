@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome to Pollux</title>
+    <title>Welcome to {{ env('APP_NAME') }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -99,7 +99,7 @@
         </div>
 
         <div class="footer">
-            <div>© 2024 Pollux. All rights reserved.</div>
+            <div>© {{ now()->year }} {{ env('APP_NAME') }}. All rights reserved.</div>
             <div style="margin-top:8px">
                 <a href="#">Privacy Policy</a>
                 <a href="#">Terms of Service</a>
