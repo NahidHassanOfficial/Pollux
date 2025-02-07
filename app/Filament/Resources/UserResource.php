@@ -7,7 +7,11 @@ use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -30,13 +34,36 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                Tabs::make()->tabs([
 
-                TextInput::make('username')->unique(ignoreRecord: true)->required()->readOnlyOn('create'),
-                TextInput::make('email')->email()->required(),
-                TextInput::make('password')->password(),
-                TextInput::make('profile_img')->placeholder('Enter image url')->url(),
-                TextInput::make('penalty')->integer(),
-                Checkbox::make('suspended')->extraAttributes(['class' => 'text-center']),
+                    Tab::make('Profile')
+                        ->icon('heroicon-o-user')
+                        ->schema([
+                            Section::make('Profile Info')->schema([
+                                TextInput::make('username')->unique(ignoreRecord: true)->required()->readOnlyOn('create'),
+                                TextInput::make('email')->email()->required(),
+                                TextInput::make('password')->password()->revealable()
+                                    ->dehydrated(fn($state) => filled($state)), // Only save if not empty
+                            ]),
+                        ]),
+
+                    Tab::make('Suspend')
+                        ->icon('heroicon-o-no-symbol')
+                        ->schema([
+                            Section::make('Suspend')->schema([
+                                Checkbox::make('suspended')->extraAttributes(['class' => 'text-center']),
+                            ]),
+                        ]),
+
+                    Tab::make('Avatar')
+                        ->icon('heroicon-o-link')
+                        ->schema([
+                            Section::make()->schema([
+                                TextInput::make('profile_img')->label('Image URL')->placeholder('Enter image url')->url(),
+                            ]),
+                        ])
+
+                ])->columnSpanFull()->persistTabInQueryString()
             ]);
     }
 
@@ -85,5 +112,10 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false; // Return false to disable the button
     }
 }

@@ -28,7 +28,9 @@ class SuperuserResource extends Resource
             ->schema([
                 TextInput::make('name')->required(),
                 TextInput::make('email')->email()->required(),
-                TextInput::make('password')->password()->required(),
+                TextInput::make('password')->password()
+                    ->required(fn(string $operation): bool => $operation === 'create') // Required only on create
+                    ->dehydrated(fn($state) => filled($state)), // Only save if not empty
                 Select::make('role')->options([
                     'admin' => 'Admin',
                     'moderator' => 'Moderator',
@@ -68,8 +70,9 @@ class SuperuserResource extends Resource
     {
         return [
             'index' => Pages\ListSuperusers::route('/'),
-            'create' => Pages\CreateSuperuser::route('/create'),
-            'edit' => Pages\EditSuperuser::route('/{record}/edit'),
+            // disabled pages to get modal view
+            // 'create' => Pages\CreateSuperuser::route('/create'),
+            // 'edit' => Pages\EditSuperuser::route('/{record}/edit'),
         ];
     }
 }
