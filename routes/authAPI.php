@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/user/{username?}', [UserController::class, 'userSearch'])->name('searchUser');
 
-Route::middleware('throttle:15,2')->group(function () {
+Route::middleware('throttle:5,1')->group(function () {
     Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
     Route::get('/verify-email/{username}', [RegisterController::class, 'verifyEmail'])->name('verifyEmail')->middleware('signed');
 
