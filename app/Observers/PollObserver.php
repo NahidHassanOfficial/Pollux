@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\Poll;
@@ -52,6 +53,9 @@ class PollObserver
             DB::table('cache')->where('key', 'like', 'view_%')->delete();
             DB::table('cache')->where('key', 'like', 'feed_%')->delete();
             DB::table('cache')->where('key', 'like', 'activePoll_%')->delete();
+
+            DB::table('cache')->where('key', 'pollStats')->delete();
+            DB::table('cache')->where('key', 'pollStatsChart')->delete();
         });
     }
 }

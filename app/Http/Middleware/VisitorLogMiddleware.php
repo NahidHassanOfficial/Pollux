@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Middleware;
 
 use App\Models\Poll;
@@ -20,7 +21,9 @@ class VisitorLogMiddleware
         $ip        = $request->ip();
         $userAgent = $request->header('User-Agent');
 
-        $poll = Poll::where('poll_uid', $poll_uid)->select('id')->first();
+        $poll = Poll::where('poll_uid', $poll_uid)->select('id')->firstOrFail();
+        $poll->increment('total_visitor');
+
         $logs = PollVisitorLog::where('poll_id', $poll->id)
             ->where('ip', $ip)
             ->where('user_agent', $userAgent)

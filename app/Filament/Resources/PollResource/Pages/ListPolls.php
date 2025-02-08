@@ -3,6 +3,9 @@
 namespace App\Filament\Resources\PollResource\Pages;
 
 use App\Filament\Resources\PollResource;
+use App\Filament\Widgets\ActivePollStatsWidget;
+use App\Filament\Widgets\DashboardStatsWidget;
+use App\Filament\Widgets\PollStatsWidget;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -14,6 +17,13 @@ class ListPolls extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+        ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            PollStatsWidget::class
         ];
     }
 }
