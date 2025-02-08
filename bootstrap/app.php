@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->encryptCookies(except: [
             'auth_token',
+            'lang',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

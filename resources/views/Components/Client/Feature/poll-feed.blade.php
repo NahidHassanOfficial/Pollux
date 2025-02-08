@@ -86,9 +86,9 @@
                     <div class="flex gap-4">
                         <select x-model="selectedFilter" @change="fetchPolls"
                             class="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#9b87f5] focus:border-transparent">
-                            <option value="recent">Most Recent</option>
-                            <option value="mostVoted">Most Voted</option>
-                            <option value="endingSoon">Ending Soon</option>
+                            <option value="recent">{{ __('Most Recent') }}</option>
+                            <option value="mostVoted">{{ __('Most Voted') }}</option>
+                            <option value="endingSoon">{{ __('Ending Soon') }}</option>
                         </select>
                         <a href="{{ route('createPage') }}"
                             class="bg-[#9b87f5] hover:bg-[#8370f3] text-white px-4 py-2 rounded-lg transition-colors inline-flex items-center gap-2">
@@ -97,7 +97,7 @@
                                 stroke-linejoin="round">
                                 <path d="M12 5v14M5 12h14" />
                             </svg>
-                            Create Poll
+                            {{ __('Create Poll') }}
                         </a>
                     </div>
                 </div>
@@ -143,7 +143,7 @@
                             </div>
                             <a :href="'{{ route('pollPage', '') }}/' + poll.poll_uid"
                                 class="mt-4 block text-center bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg transition-colors">
-                                Vote Now
+                                {{ __('Vote Now') }}
                             </a>
                         </div>
                     </template>

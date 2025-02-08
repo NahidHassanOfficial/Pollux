@@ -6,11 +6,12 @@ use App\Http\Controllers\Web\PollController;
 use App\Http\Controllers\Web\ProfilePageController;
 use App\Http\Middleware\AuthVerifyMiddleware;
 use App\Http\Middleware\isAuthOrNotMiddleware;
+use App\Http\Middleware\LocalizationMiddleware;
 use App\Http\Middleware\LoggedUserAuthPageRestrictionMiddleware;
 use App\Http\Middleware\VisitorLogMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware([isAuthOrNotMiddleware::class])->group(function () {
+Route::middleware([isAuthOrNotMiddleware::class, LocalizationMiddleware::class])->group(function () {
     Route::get('/', function () {
         return view('components.client.landing.layout');
     })->name('index');
@@ -22,7 +23,7 @@ Route::middleware([isAuthOrNotMiddleware::class])->group(function () {
     Route::get('/polls/feed', [FeaturePageController::class, 'pollFeed'])->name('pollFeed');
 });
 
-Route::get('/create-poll', [FeaturePageController::class, 'createPoll'])->name('createPage')->middleware([AuthVerifyMiddleware::class]);
+Route::get('/create-poll', [FeaturePageController::class, 'createPoll'])->name('createPage')->middleware([AuthVerifyMiddleware::class, LocalizationMiddleware::class]);
 
 Route::middleware([LoggedUserAuthPageRestrictionMiddleware::class])->group(function () {
     Route::get('/login', [AuthPageController::class, 'login'])->name('loginPage');
