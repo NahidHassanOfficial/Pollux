@@ -24,4 +24,14 @@ class Superuser extends Authenticatable
     protected $casts = [
         'password' => 'hashed'
     ];
+
+    public function isAdmin()
+    {
+        return $this->role == 'admin';
+    }
+
+    public function isModerator()
+    {
+        return $this->role == 'moderator';
+    }
 }
