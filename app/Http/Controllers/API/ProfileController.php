@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\API;
 
 use App\Helper\Response;
@@ -65,12 +66,11 @@ class ProfileController extends Controller
                 'isOwner' => true,
                 'polls'   => $polls,
             ]);
-
         }
 
         $user = User::where('username', $username)->first();
         if ($user) {
-            $polls = $user->polls()->visible()->select('poll_uid', 'title', 'status', 'total_vote', 'expire_at')->paginate(10);
+            $polls = $user->polls()->visible()->select('poll_uid', 'title', 'public_visibility', 'status', 'total_vote', 'expire_at')->paginate(10);
 
             return Response::success(null, [
                 'isOwner' => false,
