@@ -6,8 +6,20 @@
     <script>
         function profileComponent() {
             return {
+
+                isOpen: false,
+                language: 'en',
+                notificationOpen: false,
+                notifications: [{
+                    id: 1,
+                    title: 'New message from John Doe',
+                    message: 'Hello, how are you?',
+                    read: false
+                }],
+
                 authToken: null,
                 user: {
+                    id: '',
                     username: '',
                     total_poll: 0,
                     created_at: new Date(),
@@ -172,14 +184,19 @@
                         <div class="flex-1 text-center md:text-left">
                             <h1 class="text-2xl font-bold text-[#403E43] mb-2" x-text="'@' + user.username"></h1>
                             <p class="text-gray-600 mb-4" x-text="'Member since ' + timeAgo(user.created_at)"></p>
-                            <div class="flex flex-wrap justify-center md:justify-start gap-6">
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-[#9b87f5]" x-text="user.total_poll"></div>
-                                    <div class="text-sm text-gray-600">Total Polls</div>
+                            <div class="flex justify-between">
+                                <div class="flex flex-wrap justify-center md:justify-start gap-6">
+                                    <div class="text-center">
+                                        <div class="text-2xl font-bold text-[#9b87f5]" x-text="user.total_poll"></div>
+                                        <div class="text-sm text-gray-600">Total Polls</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-2xl font-bold text-[#9b87f5]" x-text="activePoll"></div>
+                                        <div class="text-sm text-gray-600">Active Polls</div>
+                                    </div>
                                 </div>
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-[#9b87f5]" x-text="activePoll"></div>
-                                    <div class="text-sm text-gray-600">Active Polls</div>
+                                <div>
+                                    <x-Client.components.notificationBell />
                                 </div>
                             </div>
                         </div>
