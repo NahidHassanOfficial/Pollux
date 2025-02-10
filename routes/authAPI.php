@@ -24,3 +24,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('/auth/google-auth', [SocialiteController::class, 'loginGoogle'])->name('login.google');
 Route::get('/auth/google-callback', [SocialiteController::class, 'handleGoogleCallback'])->name('google.callback');
+
+//event broadcast auth
+Route::post('/broadcasting/auth', function () {
+    return response()->json(['auth' => true]);
+})->middleware('auth:sanctum');

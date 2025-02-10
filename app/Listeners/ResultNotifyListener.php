@@ -22,8 +22,10 @@ class ResultNotifyListener
      */
     public function handle(PollResultNotifyEvent $event): void
     {
-        $poll = Poll::where('id', $event->poll_id)->select('id', 'user_id', 'title', 'total_vote')
-            ->with('pollOptions:poll_id,option,votes')->first();
+        // $poll = Poll::where('id', $event->id)->select('id', 'user_id', 'title', 'total_vote')
+        //     ->with('pollOptions:poll_id,option,votes')->first();
+
+        $poll = $event->poll->load('pollOptions:poll_id,option,votes');
 
         $optionResult = $poll->pollOptions->toArray();
         foreach ($optionResult as &$option) {

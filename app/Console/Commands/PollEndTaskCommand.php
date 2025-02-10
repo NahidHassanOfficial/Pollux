@@ -30,7 +30,7 @@ class PollEndTaskCommand extends Command
 
         foreach ($polls as $poll) {
             $poll->update(['status' => 'inactive']);
-            event(new PollResultNotifyEvent($poll->id));
+            event(new PollResultNotifyEvent($poll));
         }
 
     }

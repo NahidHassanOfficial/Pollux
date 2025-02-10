@@ -17,6 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'lang',
         ]);
     })
+    ->withBroadcasting(
+        __DIR__ . '/../routes/channels.php',
+        ['prefix' => 'api', 'middleware' => ['auth:sanctum']],
+    )
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
