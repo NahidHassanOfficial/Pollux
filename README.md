@@ -1,66 +1,92 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Pollux - Online Voting System 🗳️
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Pollux is a feature-rich online voting system that allows users to create polls and share them publicly or privately. With real-time notifications, advanced security measures, and a robust admin panel, Pollux ensures a seamless and secure voting experience.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **User Registration & Authentication**: Secure login and registration using Laravel Sanctum.
+- **Create & Manage Polls**: Users can create polls and choose between **public** or **private** access.
+- **Signed URL for Private Polls**: Share private polls with a unique signed link.
+- **Public Poll Feed**: Discover and vote on polls created by other users.
+- **User Profiles**: View all polls created by a specific user.
+- **Real-time Notifications**: Users receive instant alerts when a poll ends.
+- **Email Result Delivery**: Poll results are sent via email once a poll concludes.
+- **Fraud Prevention**: Prevents duplicate votes using FingerprintJS, IP tracking, and User-Agent filtering.
+- **Admin Panel with Analytics**: Built with Filament, featuring **role-based access control**.
+- **Scheduled Tasks & Queue Management**: Automates updates and triggers events when polls end.
+- **Localization Support**: Multi-language support for a global audience.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🛠️ Technologies Used
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### **Frontend**
+- **Blade & Alpine.js**: Dynamic UI components
+- **Tailwind CSS**: Clean and modern styling
+- **Axios**: Efficient API requests
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### **Backend**
+- **Laravel (Sanctum, RESTful API)**: Secure and structured backend
+- **Event, Listener, Queue, Jobs**: Optimized event-driven architecture
+- **Notifications & Mail**: Real-time user engagement
+- **Reverb & Observer Pattern**: Ensuring smooth event handling
+- **Database Caching**: Optimized performance
+- **Filament Admin Panel**: Role-based access and analytics
+- **FingerprintJS & Custom Filtering**: Prevent duplicate voting
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### **Additional Features**
+- **Social Authentication (Laravel Socialite)**
+- **Scheduled Commands for Auto-Updates**
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 📦 Installation
 
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your-username/pollux.git
+   cd pollux
+   ```
+2. Install dependencies:
+   ```sh
+   composer install
+   npm install && npm run build
+   ```
+3. Set up the environment:
+   ```sh
+   cp .env.example .env
+   php artisan key:generate
+   ```
+4. Configure database and run migrations:
+   ```sh
+   php artisan migrate --seed
+   ```
+5. Ensure the following PHP extensions are enabled in your local environment:
+   ```ini
+   extension=intl
+   extension=zip
+   ```
+6. Update mail credentials in `.env` to enable email notifications.
+7. Update Reverb credentials in `.env` before starting.
+8. Start the development server:
+   ```sh
+   php artisan serve
+   ```
+9. Run the queue worker for real-time notifications and job processing:
+   ```sh
+   php artisan queue:work
+   ```
+10. Start Reverb for real-time event broadcasting:
+   ```sh
+   reverb:start
+   ```
+11. Start frontend development server:
+   ```sh
+   npm run dev
+   ```
+12. Run scheduled tasks for poll updates:
+   ```sh
+   php artisan schedule:work
+   ```
