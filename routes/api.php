@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\FingerprintStoreController;
+use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\PollController;
 use App\Http\Controllers\API\PollFeedController;
 use App\Http\Controllers\API\ProfileController;
@@ -12,6 +13,9 @@ require_once 'authAPI.php';
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/user', [ProfileController::class, 'authUser'])->name('auth.user');
+
+    Route::get('/notifications', [NotificationController::class, 'getNotfications'])->name('get.notifications');
+    Route::post('/notifications/read', [NotificationController::class, 'markAsRead'])->name('markRead.post');
 
     Route::middleware('throttle:3,1')->group(function () {
         Route::post('/poll/create', [PollController::class, 'createPoll'])->name('poll.create');

@@ -4,6 +4,7 @@ namespace App\Listeners;
 use App\Events\PollResultNotifyEvent;
 use App\Models\Poll;
 use App\Models\User;
+use App\Notifications\PollEndNotification;
 use App\Notifications\PollResultMailNotification;
 use Illuminate\Support\Facades\Notification;
 
@@ -22,9 +23,6 @@ class ResultNotifyListener
      */
     public function handle(PollResultNotifyEvent $event): void
     {
-        // $poll = Poll::where('id', $event->id)->select('id', 'user_id', 'title', 'total_vote')
-        //     ->with('pollOptions:poll_id,option,votes')->first();
-
         $poll = $event->poll->load('pollOptions:poll_id,option,votes');
 
         $optionResult = $poll->pollOptions->toArray();
@@ -40,6 +38,7 @@ class ResultNotifyListener
         ];
 
         $user = User::find($poll->user_id);
+        $user->notify(new PollEndNotification($poll));
         Notification::send($user, new PollResultMailNotification($poll_data));
 
     }
