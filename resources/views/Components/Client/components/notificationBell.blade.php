@@ -8,9 +8,9 @@
              <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
          </svg>
          <!-- Notification Badge -->
-         <span x-show="notifications.filter(n => !n.read).length > 0"
+         <span x-show="notifications.length > 0"
              class="absolute top-1 right-1 bg-[#9b87f5] text-white text-xs w-4 h-4 flex items-center justify-center rounded-full"
-             x-text="notifications.filter(n => !n.read).length"></span>
+             x-text="notifications.length"></span>
      </button>
 
      <!-- Notification Dropdown -->
@@ -26,17 +26,18 @@
          </div>
          <div class="max-h-[300px] overflow-y-auto">
              <template x-for="(notification, index) in notifications" :key="index">
-                 <a href="#" class="px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer"
-                     :class="{ 'bg-blue-50/50': !notification.read }">
-                     <h4 class="text-sm font-medium text-gray-900" x-text="notification.title"></h4>
-                     <p class="text-sm text-gray-600 mt-1" x-text="notification.message"></p>
-                     <span class="text-xs text-gray-500 mt-1 block" x-text="notification.time"></span>
-                 </a>
+                 <div class="hover:bg-[#9b87f5] p-5">
+                     <a :href="'{{ route('pollPage', '') }}/' + notification.data.poll_uid"
+                         class=" hover:bg-gray-50 transition-colors cursor-pointer">
+                         <h4 class="text-sm font-bold text-gray-900" x-text="notification.data.title"></h4>
+                         <p class="text-sm text-gray-600 mt-1" x-text="notification.data.message"></p>
+                     </a>
+                 </div>
              </template>
          </div>
          <div class="px-4 py-2 border-t border-gray-100">
              <button class="text-sm text-[#9b87f5] hover:text-[#8370f3] transition-colors w-full text-center"
-                 @click="notifications.forEach(n => n.read = true)">
+                 @click="markAsRead()">
                  Mark all as read
              </button>
          </div>

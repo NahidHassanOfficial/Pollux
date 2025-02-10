@@ -103,6 +103,30 @@
                     });
                 },
 
+                async getNotifications() {
+                    try {
+                        const response = await axios.get('{{ route('get.notifications') }}', {
+                            headers: {
+                                'Authorization': `Bearer ${this.authToken}`
+                            }
+                        });
+
+                        this.notifications = response.data;
+                    } catch (error) {}
+                },
+
+                async markAsRead() {
+                    try {
+                        const response = await axios.post('{{ route('markRead.post') }}', {}, {
+                            headers: {
+                                'Authorization': `Bearer ${this.authToken}`
+                            }
+                        });
+
+                        this.notifications = [];
+                    } catch (error) {}
+                },
+
                 init() {
                     this.userHandler = this.url.includes('@') ? this.url.split('@').pop() : '';
                     this.authToken = getAuthToken();
@@ -119,9 +143,12 @@
 
                     this.$watch('isOwner', value => {
                         if (value) {
+                            this.getNotifications();
                             Echo.private('pollEnd-Notification.' + this.user.id)
                                 .listen('.pollEndEvent', (event) => {
-                                    this.notifications.push(event);
+                                    this.notifications.push({
+                                        data: event
+                                    });
                                 });
                         }
                     });
