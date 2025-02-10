@@ -1,8 +1,6 @@
 @extends('components.client.feature.layout')
 
 @section('page')
-    <script src="{{ asset('js/auth.js') }}"></script>
-
     <script>
         function createPollComponent() {
             return {

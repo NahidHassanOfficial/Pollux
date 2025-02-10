@@ -1,5 +1,4 @@
  <!-- Navigation -->
- <script src="{{ asset('js/auth.js') }}"></script>
  <script>
      function navComponent() {
          return {

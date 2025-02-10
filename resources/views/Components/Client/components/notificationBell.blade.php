@@ -25,13 +25,13 @@
              <h3 class="text-sm font-semibold text-gray-900">Notifications</h3>
          </div>
          <div class="max-h-[300px] overflow-y-auto">
-             <template x-for="notification in notifications" :key="notification.poll_uid">
-                 <div class="px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer"
+             <template x-for="(notification, index) in notifications" :key="index">
+                 <a href="#" class="px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer"
                      :class="{ 'bg-blue-50/50': !notification.read }">
                      <h4 class="text-sm font-medium text-gray-900" x-text="notification.title"></h4>
                      <p class="text-sm text-gray-600 mt-1" x-text="notification.message"></p>
                      <span class="text-xs text-gray-500 mt-1 block" x-text="notification.time"></span>
-                 </div>
+                 </a>
              </template>
          </div>
          <div class="px-4 py-2 border-t border-gray-100">

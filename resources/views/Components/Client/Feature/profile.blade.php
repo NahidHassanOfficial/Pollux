@@ -1,8 +1,6 @@
 @extends('components.client.feature.layout')
 
 @section('page')
-    <script src="{{ asset('js/auth.js') }}"></script>
-
     <script>
         function profileComponent() {
             return {
@@ -10,12 +8,7 @@
                 isOpen: false,
                 language: 'en',
                 notificationOpen: false,
-                notifications: [{
-                    id: 1,
-                    title: 'New message from John Doe',
-                    message: 'Hello, how are you?',
-                    read: false
-                }],
+                notifications: [],
 
                 authToken: null,
                 user: {
@@ -123,6 +116,15 @@
                             this.setupInfiniteScroll();
                         });
                     }
+
+                    this.$watch('isOwner', value => {
+                        if (value) {
+                            Echo.private('pollEnd-Notification.' + this.user.id)
+                                .listen('.pollEndEvent', (event) => {
+                                    this.notifications.push(event);
+                                });
+                        }
+                    });
                 },
 
                 timeAgo(dateString) {

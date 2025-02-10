@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('status', ['active', 'inactive', 'restricted'])->default('active');
             $table->integer('total_visitor')->default(0);
             $table->integer('total_vote')->default(0);
-            $table->timestamp('expire_at');
+            $table->dateTime('expire_at'); //used datetime to avoid ON UPDATE CURRENT_TIMESTAMP(), or we can use timestamp with nullable to avoid this issue.
             $table->string('signature')->nullable();
             $table->timestamps();
         });
