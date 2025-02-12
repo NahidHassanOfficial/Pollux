@@ -13,6 +13,36 @@
                 apiUrl: '{{ route('getPolls') }}',
                 isLoading: false,
 
+                showReportModal: false,
+                selectedPoll: null,
+                reason: null,
+                description: null,
+
+                async submitReport() {
+
+                    if (!this.reason || !this.description) {
+                        toast('Please fill the information', 'error');
+                        return;
+                    }
+
+                    try {
+                        const response = await axios.post('{{ route('poll.report') }}', {
+                            poll_uid: this.selectedPoll,
+                            reason: this.reason,
+                            description: this.description
+                        });
+
+                        this.showReportModal = false;
+                        this.selectedPoll = null;
+                        this.reason = null;
+                        this.description = null;
+                        toast('Poll reported successfully!');
+
+                    } catch (error) {
+                        toast('Something went wrong', 'error');
+                    }
+                },
+
                 async searchPolls() {
                     this.hasMore = true;
                     this.isLoading = true;
@@ -108,7 +138,8 @@
                         <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6">
                             <div class="flex justify-between items-start mb-4">
                                 <h3 class="text-lg font-semibold text-[#403E43]" x-text="poll.title"></h3>
-                                <button id="reportBtn" class="text-gray-400 hover:text-red-500">
+                                <button @click="selectedPoll = poll.poll_uid; showReportModal = true" id="reportBtn"
+                                    class="text-gray-400 hover:text-red-500">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -156,5 +187,7 @@
                 </div>
             </div>
         </div>
+
+        <x-Client.components.report-modal />
     </div>
 @endsection
