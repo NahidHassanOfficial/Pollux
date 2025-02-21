@@ -85,7 +85,7 @@
                             </div>
                         </div>
                     </div>
-                    <x-Auth.social-auth></x-Auth.social-auth>
+                    <x-auth.social-auth></x-auth.social-auth>
                 </div>
             </div>
         </div>

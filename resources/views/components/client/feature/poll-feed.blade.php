@@ -188,6 +188,6 @@
             </div>
         </div>
 
-        <x-Client.components.report-modal />
+        <x-client.components.report-modal />
     </div>
 @endsection

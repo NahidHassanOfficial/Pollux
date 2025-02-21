@@ -225,7 +225,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <x-Client.components.notificationBell />
+                                    <x-client.components.notificationBell />
                                 </div>
                             </div>
                         </div>
@@ -237,7 +237,7 @@
                     <h2 class="text-xl font-semibold text-[#403E43] mb-4">Polls Timeline</h2>
 
                     <template x-for="poll in polls" :key="poll.poll_uid">
-                        <x-Client.Components.profilePollResult />
+                        <x-client.components.profilePollResult />
                     </template>
                 </div>
 

@@ -172,7 +172,7 @@
                 </div>
 
 
-                <x-Client.Feature.utils.share-modal> </x-Client.Feature.utils.share-modal>
+                <x-client.feature.utils.share-modal> </x-client.feature.utils.share-modal>
 
             </div>
         </div>
