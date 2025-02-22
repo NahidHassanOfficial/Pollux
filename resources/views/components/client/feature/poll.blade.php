@@ -158,7 +158,7 @@
                         <div class="flex items-center gap-4 mb-2 md:mb-0">
                             <span x-text="poll.total_vote + ' votes'"></span>
                             <span>•</span>
-                            <span x-text="'Ends ' + new Date(poll.expire_at).toLocaleDateString()"></span>
+                            <span x-text="'Ends ' + new Date(poll.expire_at+ ' UTC').toLocaleString()"></span>
                         </div>
                         <div class="flex items-center gap-4">
                             <template x-if="poll.allow_multiple">

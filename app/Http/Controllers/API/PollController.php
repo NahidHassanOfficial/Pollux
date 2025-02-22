@@ -19,6 +19,10 @@ class PollController extends Controller
     {
         $request->validated();
 
+        $localDateTime = $request->expire_at;
+        $userTimezone  = $request->userTimezone;
+        $utcDateTime   = Carbon::createFromFormat('Y-m-d\TH:i', $localDateTime, $userTimezone)->setTimezone('UTC');
+
         DB::beginTransaction();
         try {
             $poll = Poll::create([
@@ -27,7 +31,7 @@ class PollController extends Controller
                 'description'       => $request->description,
                 'allow_multiple'    => $request->allow_multiple,
                 'public_visibility' => $request->public_visibility,
-                'expire_at'         => $request->expire_at,
+                'expire_at'         => $utcDateTime,
             ]);
 
             foreach ($request->options as $option) {

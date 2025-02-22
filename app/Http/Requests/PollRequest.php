@@ -29,6 +29,7 @@ class PollRequest extends FormRequest
             'allow_multiple'    => 'required|boolean',
             'public_visibility' => 'required|boolean',
             'expire_at'         => 'required|date|after_or_equal:now',
+            'userTimezone'      => 'required|timezone',
             'options'           => 'required|array|min:2|max:5',
         ];
     }

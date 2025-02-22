@@ -5,7 +5,7 @@
               <p class="text-sm text-gray-500 mt-1">
                   <span x-text="poll.total_vote + ' votes'"></span>
                   <span class="mx-2">•</span>
-                  <span x-text="'Ends ' + new Date(poll.expire_at).toLocaleDateString()"></span>
+                  <span x-text="'Ends ' + new Date(poll.expire_at + ' UTC').toLocaleDateString()"></span>
               </p>
           </div>
           <div class="flex justify-center space-x-3">

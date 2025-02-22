@@ -11,6 +11,7 @@
                 allow_multiple: false,
                 isPrivate: false,
                 expire_at: '',
+                userTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 
                 isLoading: false,
                 authToken: null,
@@ -45,6 +46,7 @@
                             allow_multiple: this.allow_multiple,
                             public_visibility: this.isPrivate ? false : true,
                             expire_at: this.expire_at,
+                            userTimezone: this.userTimezone,
                             options: this.options,
                         }, {
                             headers: {

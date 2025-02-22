@@ -170,7 +170,7 @@
                             </div>
                             <div class="flex justify-between items-center text-sm text-gray-500">
                                 <span x-text="poll.total_vote + ' votes'"></span>
-                                <span x-text="'Ends ' + new Date(poll.expire_at).toLocaleDateString()"></span>
+                                <span x-text="'Ends ' + new Date(poll.expire_at+ ' UTC').toLocaleString()"></span>
                             </div>
                             <a :href="'{{ route('pollPage', '') }}/' + poll.poll_uid"
                                 class="mt-4 block text-center bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg transition-colors">
