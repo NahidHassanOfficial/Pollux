@@ -12,7 +12,8 @@
         "laravel/reverb": "^1.0",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.17",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "predis/predis": "^2.3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",
