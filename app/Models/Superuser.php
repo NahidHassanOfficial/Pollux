@@ -1,13 +1,12 @@
 <?php
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class Superuser extends Authenticatable
+class Superuser extends Authenticatable implements FilamentUser
 {
     use Notifiable;
     protected $fillable = [
@@ -22,7 +21,7 @@ class Superuser extends Authenticatable
         'remember_token',
     ];
     protected $casts = [
-        'password' => 'hashed'
+        'password' => 'hashed',
     ];
 
     public function isAdmin()
@@ -33,5 +32,10 @@ class Superuser extends Authenticatable
     public function isModerator()
     {
         return $this->role == 'moderator';
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return str_ends_with($this->email, '@admin.com');
     }
 }
