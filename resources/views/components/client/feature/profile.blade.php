@@ -20,6 +20,7 @@
                 activePoll: 0,
                 polls: [],
                 isOwner: false,
+                userNotFound: false,
 
                 nextPage: 1,
                 lastPage: 1,
@@ -29,13 +30,17 @@
                 userHandler: '',
 
                 async getUser() {
-                    const infoResponse = await axios.get(`{{ route('userInfo') }}/${this.userHandler}`, {
-                        headers: {
-                            'Authorization': `Bearer ${this.authToken}`
-                        }
-                    });
-                    this.user = infoResponse.data.data.user;
-                    this.activePoll = infoResponse.data.data.activePoll;
+                    try {
+                        const infoResponse = await axios.get(`{{ route('userInfo') }}/${this.userHandler}`, {
+                            headers: {
+                                'Authorization': `Bearer ${this.authToken}`
+                            }
+                        });
+                        this.user = infoResponse.data.data.user;
+                        this.activePoll = infoResponse.data.data.activePoll;
+                    } catch (error) {
+                        this.userNotFound = true;
+                    }
 
                 },
 
@@ -85,22 +90,23 @@
                 },
 
                 setupInfiniteScroll() {
-                    this.$nextTick(() => {
-                        const loadMoreButton = document.querySelector('.load-more-button');
-                        const observer = new IntersectionObserver(
-                            (entries) => {
-                                entries.forEach(entry => {
-                                    if (entry.isIntersecting) {
-                                        this.getPolls();
-                                    }
-                                });
-                            }, {
-                                rootMargin: '0px',
-                                threshold: 0.1,
-                            }
-                        );
-                        observer.observe(loadMoreButton);
-                    });
+                    if (!this.userNotFound)
+                        this.$nextTick(() => {
+                            const loadMoreButton = document.querySelector('.load-more-button');
+                            const observer = new IntersectionObserver(
+                                (entries) => {
+                                    entries.forEach(entry => {
+                                        if (entry.isIntersecting) {
+                                            this.getPolls();
+                                        }
+                                    });
+                                }, {
+                                    rootMargin: '0px',
+                                    threshold: 0.1,
+                                }
+                            );
+                            observer.observe(loadMoreButton);
+                        });
                 },
 
                 async getNotifications() {
