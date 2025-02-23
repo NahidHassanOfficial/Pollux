@@ -53,10 +53,12 @@ class SocialiteController extends Controller
 
         $token = $userModel->createToken('auth_token', ['*'], now()->addWeek())->plainTextToken;
 
-        return Response::success($token)->header(
-            'Set-Cookie',
-            'auth_token=' . $token . '; Max-Age=' . (60 * 24 * 7) . '; Path=/'
-        );
+        // return Response::success($token)->header(
+        //     'Set-Cookie',
+        //     'auth_token=' . $token . '; Max-Age=' . (60 * 24 * 7) . '; Path=/'
+        // );
+
+        return view('components.auth.callback', ['response' => Response::success($token)]);
 
     }
 }
