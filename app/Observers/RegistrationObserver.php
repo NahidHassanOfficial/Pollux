@@ -4,6 +4,7 @@ namespace App\Observers;
 use App\Jobs\WelcomeMailJob;
 use App\Models\User;
 use App\Services\EmailVerificationService;
+use Illuminate\Support\Facades\Cache;
 
 class RegistrationObserver
 {
@@ -17,6 +18,8 @@ class RegistrationObserver
         }
 
         dispatch(new WelcomeMailJob((Object) $user));
+
+        $this->clearCache();
     }
 
     /**
@@ -32,7 +35,7 @@ class RegistrationObserver
      */
     public function deleted(User $user): void
     {
-        //
+        $this->clearCache();
     }
 
     /**
@@ -49,5 +52,10 @@ class RegistrationObserver
     public function forceDeleted(User $user): void
     {
         //
+    }
+
+    protected function clearCache()
+    {
+        Cache::forget('userStats');
     }
 }

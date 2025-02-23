@@ -1,8 +1,11 @@
 <?php
 namespace App\Models;
 
+use App\Observers\ReportObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 
+#[ObservedBy([ReportObserver::class])]
 class PollReport extends Model
 {
 
