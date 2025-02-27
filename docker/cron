@@ -1,0 +1,1 @@
+* * * * * /usr/local/bin/php /var/www/pollux/artisan schedule:run >> /var/log/cron.log 2>> /var/log/cron.err
