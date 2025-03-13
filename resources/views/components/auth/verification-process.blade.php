@@ -15,7 +15,7 @@
                         if (this.status == 'success') {
                             this.message = 'Your email has been successfully verified!';
                             setTimeout(() => {
-                                window.location.href = '{{ route('profilePage') }}';
+                                window.location.href = '{{ route('loginPage') }}';
                             }, 1500);
 
                         } else {
