@@ -27,7 +27,8 @@ class RegisterController extends Controller
         $user->email_verified = 1;
         $user->save();
 
-        return Response::success('Email verified successfully');
+        // return Response::success('Email verified successfully');
+        return view('components.auth.verification-process', ['status' => 'success']);
     }
 
 }
