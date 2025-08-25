@@ -59,34 +59,42 @@ Pollux is a feature-rich online voting system that allows users to create polls 
    cp .env.example .env
    php artisan key:generate
    ```
-4. Configure database and run migrations:
+4. Update the database configuration
+    - `sqlite` might fail in some queries. Better if you use MySQL
+    - If you want Redis-based caching, make sure you have that installed on your machine.  If you don't have then change the following .env configuration to `database`
+      ```sh
+      SESSION_DRIVER=database
+      QUEUE_CONNECTION=database
+      CACHE_STORE=database
+      ```
+5. After configuring the database, run migrations:
    ```sh
    php artisan migrate --seed
    ```
-5. Ensure the following PHP extensions are enabled in your local environment:
+6. Ensure the following PHP extensions are enabled in your local environment:
    ```ini
    extension=intl
    extension=zip
    ```
-6. Update mail credentials in `.env` to enable email notifications.
-7. Update Reverb credentials in `.env` before starting.
-8. Start the development server:
+7. Update mail credentials in `.env` to enable email notifications.
+8. Update Reverb credentials in `.env` before starting.
+9. Start the development server:
    ```sh
    php artisan serve
    ```
-9. Run the queue worker for real-time notifications and job processing:
+10. Run the queue worker for real-time notifications and job processing:
    ```sh
    php artisan queue:work
    ```
-10. Start Reverb for real-time event broadcasting:
+11. Start Reverb for real-time event broadcasting:
    ```sh
    reverb:start
    ```
-11. Start frontend development server:
+12. Start frontend development server:
    ```sh
    npm run dev
    ```
-12. Run scheduled tasks for poll updates:
+13. Run scheduled tasks for poll updates:
    ```sh
    php artisan schedule:work
    ```
